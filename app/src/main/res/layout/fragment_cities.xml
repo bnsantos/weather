@@ -1,0 +1,18 @@
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.bnsantos.weather.ui.CitiesFragment">
+  <android.support.v7.widget.RecyclerView
+      android:id="@+id/recycleView"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"/>
+  <android.support.design.widget.FloatingActionButton
+      android:id="@+id/fab"
+      android:layout_width="@dimen/fab_size"
+      android:layout_height="@dimen/fab_size"
+      android:layout_margin="20dp"
+      android:layout_gravity="bottom|end"
+      android:src="@drawable/ic_add_white_24dp"/>
+</android.support.design.widget.CoordinatorLayout>
