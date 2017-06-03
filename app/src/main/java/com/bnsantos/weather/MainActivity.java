@@ -1,15 +1,19 @@
 package com.bnsantos.weather;
 
+import android.content.ContentValues;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Toast;
 
+import com.bnsantos.weather.db.WeatherContract;
 import com.bnsantos.weather.model.City;
 import com.bnsantos.weather.ui.CitiesFragment;
 import com.bnsantos.weather.ui.MapFragment;
 import com.google.android.gms.maps.model.LatLng;
 
 public class MainActivity extends AppCompatActivity implements CitiesFragment.CitiesFragmentListener, MapFragment.MapFragmentListener {
+  private static final String TAG = MainActivity.class.getSimpleName();
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -32,8 +36,17 @@ public class MainActivity extends AppCompatActivity implements CitiesFragment.Ci
   }
 
   @Override
+  public void cityClicked(City clicked) {
+    Log.i(TAG, clicked.toString());
+    Toast.makeText(this, "TODO", Toast.LENGTH_SHORT).show();
+  }
+
+  @Override
   public void onCityChosen(City city) {
     Toast.makeText(this, city.toString(), Toast.LENGTH_SHORT).show();
+
+    WeatherContract.CityEntry.insert(getContentResolver(), city);
+
     getSupportFragmentManager()
         .popBackStack();
   }
