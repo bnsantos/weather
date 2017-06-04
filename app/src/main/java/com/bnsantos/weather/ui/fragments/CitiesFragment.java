@@ -1,4 +1,4 @@
-package com.bnsantos.weather.ui;
+package com.bnsantos.weather.ui.fragments;
 
 import android.content.Context;
 import android.database.Cursor;
@@ -19,6 +19,7 @@ import android.view.ViewGroup;
 import com.bnsantos.weather.R;
 import com.bnsantos.weather.db.WeatherContract;
 import com.bnsantos.weather.model.City;
+import com.bnsantos.weather.ui.CityAdapter;
 import com.bnsantos.weather.ui.recyclerview.RecyclerItemClickListener;
 import com.bnsantos.weather.ui.recyclerview.SparseItemRemoveAnimator;
 import com.bnsantos.weather.ui.recyclerview.SwipeDismiss;
@@ -129,7 +130,7 @@ public class CitiesFragment extends Fragment implements View.OnClickListener, Lo
   }
 
   protected void remove(String[] remove){
-    WeatherContract.CityEntry.remove(getContext().getContentResolver(), remove);
+    WeatherContract.remove(getContext().getContentResolver(), remove, WeatherContract.CityEntry.CONTENT_URI);
   }
 
   @Override

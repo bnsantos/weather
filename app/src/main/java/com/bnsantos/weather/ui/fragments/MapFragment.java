@@ -1,4 +1,4 @@
-package com.bnsantos.weather.ui;
+package com.bnsantos.weather.ui.fragments;
 
 import android.content.Context;
 import android.location.Address;

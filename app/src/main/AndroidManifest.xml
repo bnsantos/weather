@@ -7,7 +7,9 @@
   <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
   <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
 
-  <uses-feature android:glEsVersion="0x00020000" android:required="true"/>
+  <uses-feature
+      android:glEsVersion="0x00020000"
+      android:required="true"/>
 
   <application
       android:allowBackup="true"
@@ -16,8 +18,13 @@
       android:roundIcon="@mipmap/ic_launcher_round"
       android:supportsRtl="true"
       android:theme="@style/AppTheme">
-    <meta-data android:name="com.google.android.gms.version" android:value="@integer/google_play_services_version" />
-    <meta-data android:name="com.google.android.geo.API_KEY" android:value="AIzaSyDG9C5aTk1VXWMENWhp8sYYxSVDnqz4gnY" />
+    <meta-data
+        android:name="com.google.android.gms.version"
+        android:value="@integer/google_play_services_version"/>
+    <meta-data
+        android:name="com.google.android.geo.API_KEY"
+        android:value="AIzaSyDG9C5aTk1VXWMENWhp8sYYxSVDnqz4gnY"/>
+
     <activity android:name=".MainActivity">
       <intent-filter>
         <action android:name="android.intent.action.MAIN"/>
@@ -25,11 +32,18 @@
         <category android:name="android.intent.category.LAUNCHER"/>
       </intent-filter>
     </activity>
+
     <provider
-        android:authorities="@string/content_authority"
         android:name=".db.WeatherProvider"
+        android:authorities="@string/content_authority"
         android:exported="false"
         android:syncable="true"/>
+
+    <service
+        android:name=".service.WeatherService"
+        android:enabled="true"
+        android:exported="false">
+    </service>
   </application>
 
 </manifest>

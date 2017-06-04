@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.bnsantos.weather.ui.CitiesFragment">
+    tools:context="com.bnsantos.weather.ui.fragments.CitiesFragment">
   <android.support.v7.widget.RecyclerView
       android:id="@+id/recycleView"
       android:padding="10dp"

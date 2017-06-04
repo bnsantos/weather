@@ -1,6 +1,9 @@
 package com.bnsantos.weather.model;
 
-public class City {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+public class City implements Parcelable {
   private final String mName;
   private final String mCountry;
   private final double mLat;
@@ -38,4 +41,37 @@ public class City {
         ", mLon=" + mLon +
         '}';
   }
+
+
+  @Override
+  public int describeContents() {
+    return 0;
+  }
+
+  @Override
+  public void writeToParcel(Parcel dest, int flags) {
+    dest.writeString(this.mName);
+    dest.writeString(this.mCountry);
+    dest.writeDouble(this.mLat);
+    dest.writeDouble(this.mLon);
+  }
+
+  protected City(Parcel in) {
+    this.mName = in.readString();
+    this.mCountry = in.readString();
+    this.mLat = in.readDouble();
+    this.mLon = in.readDouble();
+  }
+
+  public static final Parcelable.Creator<City> CREATOR = new Parcelable.Creator<City>() {
+    @Override
+    public City createFromParcel(Parcel source) {
+      return new City(source);
+    }
+
+    @Override
+    public City[] newArray(int size) {
+      return new City[size];
+    }
+  };
 }
