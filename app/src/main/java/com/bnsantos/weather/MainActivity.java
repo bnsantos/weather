@@ -12,6 +12,7 @@ import com.bnsantos.weather.model.City;
 import com.bnsantos.weather.service.WeatherService;
 import com.bnsantos.weather.ui.fragments.CitiesFragment;
 import com.bnsantos.weather.ui.fragments.ForecastFragment;
+import com.bnsantos.weather.ui.fragments.HelpFragment;
 import com.bnsantos.weather.ui.fragments.MapFragment;
 
 public class MainActivity extends AppCompatActivity implements CitiesFragment.CitiesFragmentListener, MapFragment.MapFragmentListener {
@@ -74,6 +75,11 @@ public class MainActivity extends AppCompatActivity implements CitiesFragment.Ci
   public boolean onOptionsItemSelected(MenuItem item) {
     switch (item.getItemId()) {
       case R.id.help:
+        getSupportFragmentManager()
+            .beginTransaction()
+            .replace(R.id.content, HelpFragment.newInstance())
+            .addToBackStack("Map")
+            .commit();
         return true;
       case R.id.settings:
         return true;
