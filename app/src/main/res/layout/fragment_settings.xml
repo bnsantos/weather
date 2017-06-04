@@ -1,0 +1,31 @@
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="15dp"
+    tools:context="com.bnsantos.weather.SettingsFragment">
+
+  <TextView
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:textSize="24sp"
+      android:textColor="@android:color/black"
+      android:text="@string/units"/>
+  <RadioGroup
+      android:id="@+id/group"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content">
+    <RadioButton
+        android:id="@+id/metric"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/metric"/>
+    <RadioButton
+        android:id="@+id/imperial"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/imperial"/>
+  </RadioGroup>
+</LinearLayout>

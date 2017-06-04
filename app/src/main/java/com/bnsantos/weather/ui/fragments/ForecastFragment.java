@@ -42,6 +42,8 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
   private TextView mHumidity;
   private TextView mWind;
 
+  private int mUnit;
+
   public ForecastFragment() {}
 
   public static ForecastFragment newInstance(@NonNull final City city) {
@@ -55,6 +57,7 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
   @Override
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
+    mUnit = getActivity().getSharedPreferences("prefs", Context.MODE_PRIVATE).getInt("unit", 0);
     if (getArguments() != null) {
       mCity = getArguments().getParcelable(ARG_CITY);
     }
@@ -117,14 +120,14 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
 
       long time = weather.getDate().getTime();
       mDay.setText(getDayName(getActivity(), time));
-      mDate.setText(getFormattedMonthDay(getActivity(), time));
+      mDate.setText(getFormattedMonthDay(time));
 
       mDescription.setText(weather.getDescription());
-      mTemp.setText(formatTemperature(getContext(), weather.getTemp()));
-      mTempMax.setText(formatTemperature(getContext(), weather.getTempMax()));
-      mTempMin.setText(formatTemperature(getContext(), weather.getTempMin()));
+      mTemp.setText(formatTemperature(getContext(), mUnit, weather.getTemp()));
+      mTempMax.setText(formatTemperature(getContext(), mUnit, weather.getTempMax()));
+      mTempMin.setText(formatTemperature(getContext(), mUnit, weather.getTempMin()));
       mHumidity.setText(getString(R.string.format_humidity, weather.getHumidity()));
-      mWind.setText(getFormattedWind(getContext(), weather.getWindSpeed(), weather.getWindDegrees()));
+      mWind.setText(getFormattedWind(getContext(), mUnit, weather.getWindSpeed(), weather.getWindDegrees()));
     }else {
       Toast.makeText(getContext(), "Nao achou", Toast.LENGTH_SHORT).show();
     }
@@ -133,26 +136,22 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
   @Override
   public void onLoaderReset(Loader<Cursor> loader) { }
 
-  public static String formatTemperature(Context context, double temperature) {
-    // Data stored in Celsius by default.  If user prefers to see in Fahrenheit, convert
-    // the values here.
-    String suffix = "\u00B0";
-    /*if (!isMetric(context)) {
+  public static String formatTemperature(Context context, int unit, double temperature) {
+    if (unit != 0) {
       temperature = (temperature * 1.8) + 32;
-    }*/
+    }
 
-    // For presentation, assume the user doesn't care about tenths of a degree.
     return String.format(context.getString(R.string.format_temperature), temperature);
   }
 
-  public static String getFormattedWind(Context context, double windSpeed, double degrees) {
+  public static String getFormattedWind(Context context, int unit, double windSpeed, double degrees) {
     int windFormat;
-    windFormat = R.string.format_wind_kmh;
-    /*if (Utility.isMetric(context)) {
+    if (unit == 0) { //Metric
+      windFormat = R.string.format_wind_kmh;
     } else {
       windFormat = R.string.format_wind_mph;
       windSpeed = .621371192237334f * windSpeed;
-    }*/
+    }
 
     String direction = "Unknown";
     if (degrees >= 337.5 || degrees < 22.5) {
@@ -203,11 +202,10 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
 
   /**
    * Converts db date format to the format "Month day", e.g "June 24".
-   * @param context Context to use for resource localization
    * @param dateInMillis The db formatted date string, expected to be of the form specified in Utility.DATE_FORMAT
    * @return The day in the form of a string formatted "December 6"
    */
-  public static String getFormattedMonthDay(Context context, long dateInMillis ) {
+  public static String getFormattedMonthDay(long dateInMillis) {
     Time time = new Time();
     time.setToNow();
     SimpleDateFormat monthDayFormat = new SimpleDateFormat("MMMM dd");

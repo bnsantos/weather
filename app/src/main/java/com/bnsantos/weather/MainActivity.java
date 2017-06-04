@@ -47,7 +47,7 @@ public class MainActivity extends AppCompatActivity implements CitiesFragment.Ci
     getSupportFragmentManager()
         .beginTransaction()
         .replace(R.id.content, ForecastFragment.newInstance(clicked))
-        .addToBackStack("Map")
+        .addToBackStack("Forecast")
         .commit();
   }
 
@@ -78,10 +78,15 @@ public class MainActivity extends AppCompatActivity implements CitiesFragment.Ci
         getSupportFragmentManager()
             .beginTransaction()
             .replace(R.id.content, HelpFragment.newInstance())
-            .addToBackStack("Map")
+            .addToBackStack("Help")
             .commit();
         return true;
       case R.id.settings:
+        getSupportFragmentManager()
+            .beginTransaction()
+            .replace(R.id.content, SettingsFragment.newInstance())
+            .addToBackStack("Settings")
+            .commit();
         return true;
       default:
         return super.onOptionsItemSelected(item);
