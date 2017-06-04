@@ -3,12 +3,14 @@ package com.bnsantos.weather.ui.fragments;
 import android.content.Context;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.text.format.Time;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,6 +27,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 public class ForecastFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>{
+  private static final String TAG = ForecastFragment.class.getSimpleName();
   private static final String ARG_CITY = "city";
   private City mCity;
 
@@ -41,7 +44,7 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
 
   public ForecastFragment() {}
 
-  public static ForecastFragment newInstance(City city) {
+  public static ForecastFragment newInstance(@NonNull final City city) {
     ForecastFragment fragment = new ForecastFragment();
     Bundle args = new Bundle();
     args.putParcelable(ARG_CITY, city);
@@ -55,8 +58,6 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
     if (getArguments() != null) {
       mCity = getArguments().getParcelable(ARG_CITY);
     }
-
-    //TODO city null
   }
 
   @Override
@@ -99,9 +100,9 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
     return new CursorLoader(getActivity(),
         WeatherContract.WeatherEntry.buildWeatherLocationDateUri(mCity.getLat(), mCity.getLon(), Calendar.getInstance().getTime()),
         null,
-        null,
-        null,
-        null
+        WeatherContract.WeatherEntry.COLUMN_LAT + " = ? AND " + WeatherContract.WeatherEntry.COLUMN_LON + " = ?",
+        new String[] { Double.toString(mCity.getLat()),  Double.toString(mCity.getLon())},
+        WeatherContract.WeatherEntry.COLUMN_DATE + " DESC"
     );
   }
 
@@ -109,6 +110,8 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
   public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
     if (data != null && data.moveToFirst()) {
       Weather weather = WeatherContract.WeatherEntry.parse(data);
+
+      Log.i(TAG, weather.toString());
 
       mIcon.setImageResource(getArtResourceForWeatherCondition(weather.getWeatherId()));
 

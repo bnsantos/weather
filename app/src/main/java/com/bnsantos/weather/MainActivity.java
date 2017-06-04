@@ -4,7 +4,8 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
-import android.widget.Toast;
+import android.view.Menu;
+import android.view.MenuItem;
 
 import com.bnsantos.weather.db.WeatherContract;
 import com.bnsantos.weather.model.City;
@@ -40,9 +41,7 @@ public class MainActivity extends AppCompatActivity implements CitiesFragment.Ci
   public void cityClicked(City clicked) {
     Log.i(TAG, clicked.toString());
 
-    Intent intent = new Intent(this, WeatherService.class);
-    intent.putExtra("city", clicked);
-    startService(intent);
+    fetchCityWeather(clicked);
 
     getSupportFragmentManager()
         .beginTransaction()
@@ -53,11 +52,33 @@ public class MainActivity extends AppCompatActivity implements CitiesFragment.Ci
 
   @Override
   public void onCityChosen(City city) {
-    Toast.makeText(this, city.toString(), Toast.LENGTH_SHORT).show();
-
+    fetchCityWeather(city);
     WeatherContract.CityEntry.insert(getContentResolver(), city);
-
     getSupportFragmentManager()
         .popBackStack();
+  }
+
+  private void fetchCityWeather(City clicked) {
+    Intent intent = new Intent(this, WeatherService.class);
+    intent.putExtra("city", clicked);
+    startService(intent);
+  }
+
+  @Override
+  public boolean onCreateOptionsMenu(Menu menu) {
+    getMenuInflater().inflate(R.menu.main, menu);
+    return true;
+  }
+
+  @Override
+  public boolean onOptionsItemSelected(MenuItem item) {
+    switch (item.getItemId()) {
+      case R.id.help:
+        return true;
+      case R.id.settings:
+        return true;
+      default:
+        return super.onOptionsItemSelected(item);
+    }
   }
 }

@@ -27,7 +27,6 @@ import com.bnsantos.weather.ui.recyclerview.SwipeDismiss;
 public class CitiesFragment extends Fragment implements View.OnClickListener, LoaderManager.LoaderCallbacks<Cursor>,SwipeDismiss.DismissCallbacks, RecyclerItemClickListener.OnItemClickListener {
 
   private CitiesFragmentListener mListener;
-  private RecyclerView mRecyclerView;
   private CityAdapter mAdapter;
   protected boolean mCanDismiss = true;
 
@@ -45,13 +44,13 @@ public class CitiesFragment extends Fragment implements View.OnClickListener, Lo
   @Override
   public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
     View view = inflater.inflate(R.layout.fragment_cities, container, false);
-    mRecyclerView = (RecyclerView) view.findViewById(R.id.recycleView);
-    mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+    RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.recycleView);
+    recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
     mAdapter = new CityAdapter();
-    mRecyclerView.setAdapter(mAdapter);
-    mRecyclerView.setItemAnimator(new SparseItemRemoveAnimator());
-    mRecyclerView.setOnTouchListener(new SwipeDismiss(mRecyclerView, this));
-    mRecyclerView.addOnItemTouchListener(new RecyclerItemClickListener(getContext(), this));
+    recyclerView.setAdapter(mAdapter);
+    recyclerView.setItemAnimator(new SparseItemRemoveAnimator());
+    recyclerView.setOnTouchListener(new SwipeDismiss(recyclerView, this));
+    recyclerView.addOnItemTouchListener(new RecyclerItemClickListener(getContext(), this));
     view.findViewById(R.id.fab).setOnClickListener(this);
 
     getLoaderManager().initLoader(0, null, this);

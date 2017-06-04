@@ -37,13 +37,13 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
   private MapView mMapView;
   private GoogleMap mGoogleMap;
   private Marker mMarker;
-  private Geocoder mGeocoder;
 
   private double mLat;
   private double mLon;
   private String mCity;
   private String mCountry;
   private MenuItem mConfirm;
+  protected Geocoder mGeocoder;
 
   private Handler mGeoCoderHandler = new  Handler() {
     @Override
@@ -53,7 +53,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
           Bundle bundle = message.getData();
           Address address = bundle.getParcelable("address");
 
-          if (mGoogleMap != null) {
+          if (address != null && mGoogleMap != null) {
             mCity = address.getLocality();
             mCountry = address.getCountryCode();
             mLat = address.getLatitude();
@@ -166,13 +166,12 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
   @Override
   public void onMapLongClick(LatLng latLng) {
     Toast.makeText(getContext(), R.string.looking_for_cities, Toast.LENGTH_SHORT).show();
-    getAddressFromLocation(latLng, getContext(), mGeoCoderHandler);
+    getAddressFromLocation(latLng, mGeocoder, mGeoCoderHandler);
   }
 
-  public static void getAddressFromLocation(final LatLng location, final Context context, final Handler handler) {
+  public static void getAddressFromLocation(final LatLng location, final Geocoder geocoder, final Handler handler) {
     Thread thread = new Thread() {
       @Override public void run() {
-        Geocoder geocoder = new Geocoder(context, Locale.getDefault());
         Address result = null;
         try {
           List<Address> list = geocoder.getFromLocation(location.latitude, location.longitude, 1);
