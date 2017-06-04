@@ -112,7 +112,7 @@ public class CitiesFragment extends Fragment implements View.OnClickListener, Lo
             @Override
             public void onDismissed(Snackbar transientBottomBar, int event) {
               super.onDismissed(transientBottomBar, event);
-              if(event != DISMISS_EVENT_TIMEOUT && event != DISMISS_EVENT_SWIPE && event != DISMISS_EVENT_ACTION) {
+              if(event == DISMISS_EVENT_TIMEOUT || event == DISMISS_EVENT_SWIPE) {
                 remove(toRemove);
               }
               mCanDismiss = true;
